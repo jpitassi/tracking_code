@@ -51,7 +51,7 @@ function theme_tracking_code_overview_table($variables) {
       $actions = array();
       $enabled = ($snippet->status) ? t('Disable') : t('Enable');
       $actions = array(
-        l($enabled, '#', array('attributes' => array('class' => 'tracking-code-disable-link', 'rel' => $snippet->tcid))),
+        '<a class="tracking-code-disable-link" href="#" rel="' . $snippet->tcid . '">' . $enabled . '</a>',
         l(t('Configure'), $base_url . '/admin/structure/tracking_code/' . $snippet->tcid . '/edit'),
         l(t('Delete'), $base_url . '/admin/structure/tracking_code/' . $snippet->tcid . '/delete'),
       );
@@ -66,7 +66,7 @@ function theme_tracking_code_overview_table($variables) {
             'data' => check_plain(truncate_utf8($snippet->code, 150, FALSE, '...')),
             'class' => 'tracking-code-code'
           ),
-          $actions,
+          implode(' | ', $actions),
           drupal_render($form['tracking_code'][$region]['weight_' . $snippet->tcid]),
         ),
         // make all rows draggable

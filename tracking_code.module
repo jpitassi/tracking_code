@@ -26,9 +26,6 @@ function tracking_code_init() {
       '#weight' => $snippet->weight,
     ), 'tracking_code_' . $id);
   }
-
-  //menu_rebuild();
-  //cache_clear_all();
 }
 
 /**
