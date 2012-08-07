@@ -10,7 +10,7 @@
  */
 define('TRACKING_CODE_VISIBILITY_NOTLISTED', 0);
 define('TRACKING_CODE_VISIBILITY_LISTED', 1);
- 
+
 /**
  * Implements hook_init().
  */
@@ -26,7 +26,7 @@ function tracking_code_init() {
       '#weight' => $snippet->weight,
     ), 'tracking_code_' . $id);
   }
-  
+
   //menu_rebuild();
   //cache_clear_all();
 }
@@ -42,7 +42,7 @@ function tracking_code_page_alter(&$page) {
       '#weight' => $snippet->weight,
     );
   }
-  
+
   // render page bottom tracking_code
   foreach ($_SESSION['tracking_code']['page_bottom'] as $snippet) {
     $page['page_bottom']['tracking_code'][$snippet->name] = array(
@@ -50,10 +50,10 @@ function tracking_code_page_alter(&$page) {
       '#weight' => $snippet->weight,
     );
   }
-  
+
   unset($_SESSION['tracking_code']);
 }
- 
+
 /**
  * Implements hook_menu().
  */
@@ -65,7 +65,7 @@ function tracking_code_menu() {
     'access arguments' => array('administer tracking code'),
     'file' => 'tracking_code.admin.inc',
   );
-  
+
   $items['admin/structure/tracking_code/list'] = array(
     'title' => 'List',
     'page callback' => 'tracking_code_admin_overview',
@@ -74,7 +74,7 @@ function tracking_code_menu() {
     'type' => MENU_DEFAULT_LOCAL_TASK,
     'weight' => -1,
   );
-  
+
   $items['admin/structure/tracking_code/add'] = array(
     'title' => 'Add Tracking Code',
     'description' => 'Create a new tracking code snippet',
@@ -84,7 +84,7 @@ function tracking_code_menu() {
     'file' => 'tracking_code.admin.inc',
     'type' => MENU_LOCAL_TASK,
   );
-  
+
   $items['admin/structure/tracking_code/%/edit'] = array(
     'title' => 'Edit Tracking Code',
     'page callback' => 'drupal_get_form',
@@ -93,7 +93,7 @@ function tracking_code_menu() {
     'file' => 'tracking_code.admin.inc',
     'type' => MENU_CALLBACK,
   );
-  
+
   $items['admin/structure/tracking_code/%/delete'] = array(
     'title' => 'Delete Tracking Code',
     'description' => 'Delete an existing tracking code snippet',
@@ -103,7 +103,7 @@ function tracking_code_menu() {
     'file' => 'tracking_code.admin.inc',
     'type' => MENU_CALLBACK,
   );
-  
+
   $items['admin/structure/tracking_code/%/disable'] = array(
     'title' => 'Disable/Enable Tracking Code',
     'page callback' => 'tracking_code_ajax_disable',
@@ -177,7 +177,7 @@ function _tracking_code_enabled_by_region() {
     'page_top' => array(),
     'page_bottom' => array(),
   );
-  
+
   $results = db_select('tracking_code', 't')
     ->fields('t')
     ->condition('status', '1', '=')
@@ -227,15 +227,15 @@ function _tracking_code_all_by_region() {
     'page_top' => array(),
     'page_bottom' => array(),
   );
-  
+
   $results = db_select('tracking_code', 't')
     ->fields('t')
     ->execute();
-    
+
   foreach ($results as $snippet) {
     $snippets[$snippet->region][$snippet->tcid] = $snippet;
   }
-  
+
   return $snippets;
 }
 
@@ -258,4 +258,3 @@ function _tracking_code_weight_sort($a, $b) {
   if ($a->weight == $b->weight) return 0;
   return ($a->weight > $b->weight) ? 1 : -1;
 }
-

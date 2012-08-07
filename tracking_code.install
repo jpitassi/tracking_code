@@ -1,6 +1,11 @@
 <?php
 
 /**
+ * @file
+ *   contains installation information for tracking_code module
+ */
+
+/**
  * Implements hook_schema().
  */
 function tracking_code_schema() {
@@ -76,6 +81,6 @@ function tracking_code_schema() {
     ),
     'primary key' => array('tcid'),
   );
-  
+
   return $schema;
 }
