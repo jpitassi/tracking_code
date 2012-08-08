@@ -189,6 +189,12 @@ function tracking_code_add_form() {
 function tracking_code_edit_form($form, &$form_state, $delta) {
   $snippet = _tracking_code_read($delta);
 
+  // Don't show a blank edit form.
+  if (!$snippet) {
+    drupal_not_found();
+    exit();
+  }
+
   $form['delta'] = array(
     '#type' => 'hidden',
     '#value' => $delta,
@@ -277,6 +283,13 @@ function tracking_code_edit_form($form, &$form_state, $delta) {
  */
 function tracking_code_delete_form($form, &$form_state, $delta) {
   $snippet = _tracking_code_read($delta);
+
+  // Don't show a blank delete form.
+  if (!$snippet) {
+    drupal_not_found();
+    exit();
+  }
+
   $form['delta'] = array('#type' => 'hidden', '#value' => $delta);
   $form['snippet_name'] = array('#type' => 'hidden', '#values' => $snippet['name']);
 
@@ -390,6 +403,7 @@ function tracking_code_edit_form_submit($form, &$form_state) {
  * Submit function for tracking_code delete form.
  */
 function tracking_code_delete_form_submit($form, &$form_state) {
+  dsm($form_state);
   db_delete('tracking_code')
     ->condition('tcid', $form_state['values']['delta'])
     ->execute();

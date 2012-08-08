@@ -32,7 +32,7 @@ function tracking_code_init() {
  * Implements hook_page_alter().
  */
 function tracking_code_page_alter(&$page) {
-  // Render page top tracking_code.
+  // Render "After <BODY>" tracking code.
   foreach ($_SESSION['tracking_code']['page_top'] as $snippet) {
     $page['page_top']['tracking_code'][$snippet->name] = array(
       '#markup' => $snippet->code,
@@ -40,7 +40,7 @@ function tracking_code_page_alter(&$page) {
     );
   }
 
-  // Render page bottom tracking_code.
+  // Render "Before </BODY>" tracking code.
   foreach ($_SESSION['tracking_code']['page_bottom'] as $snippet) {
     $page['page_bottom']['tracking_code'][$snippet->name] = array(
       '#markup' => $snippet->code,
