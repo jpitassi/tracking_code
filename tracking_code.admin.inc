@@ -35,7 +35,7 @@ function theme_tracking_code_overview_table($variables) {
   $regions = unserialize($form['regions']['#value']);
 
   if (empty($regions['header']) && empty($regions['page_top']) && empty($regions['page_bottom'])) {
-    $link = l('Click here', 'admin/structure/tracking_code/add');
+    $link = l(t('Click here'), 'admin/structure/tracking_code/add');
     $output .= t('You have not configured any tracking code snippets. !link to add one.', array('!link' => $link));
     return $output;
   }
