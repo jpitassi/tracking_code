@@ -7,7 +7,7 @@
         anchor = $(this);
         delta = anchor.attr('rel');
         loading = $('<div class="tracking-code-loading"></div>');
-        
+
         anchor.after(loading);
         ajaxResponse = $.getJSON(Drupal.settings.basePath + 'admin/structure/tracking_code/' + delta + '/disable', function(response) {
           if (response.status) {
@@ -21,5 +21,5 @@
       });
     }
   };
-  
+
 }(jQuery));
