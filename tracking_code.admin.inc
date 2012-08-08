@@ -6,9 +6,9 @@
  */
 
 /**
- * Page callback for tracking code main admin page (admin/structure/tracking_code)
+ * Page callback for tracking code admin page (admin/structure/tracking_code).
  *
- * @return
+ * @return array
  *   the themed output for the admin overview page
  */
 function tracking_code_admin_overview() {
@@ -20,12 +20,12 @@ function tracking_code_admin_overview() {
 }
 
 /**
- * Theme function for the tracking code admin overview table
+ * Theme function for the tracking code admin overview table.
  *
- * @param $variables
+ * @param array $variables
  *   an associative array of arguments (should only contain $form array)
  *
- * @return
+ * @return array
  *   the admin overview form, themed as a draggable table of tracking_code
  */
 function theme_tracking_code_overview_table($variables) {
@@ -38,15 +38,18 @@ function theme_tracking_code_overview_table($variables) {
     return 'You have not configured any tracking code snippets. <a href="' . $base_url . '/admin/structure/tracking_code/add">Click here</a> to add one.';
   }
 
-  // create a table for each region
+  // Create a table for each region.
   foreach ($regions as $region => $snippets) {
     $rows = array();
-    if (empty($snippets)) continue;
+    if (empty($snippets)) {
+      // Nothing to do here...
+      continue;
+    }
 
-    // sort rows by weight before creating table
+    // Sort rows by weight before creating table.
     usort($snippets, '_tracking_code_weight_sort');
 
-    // build a row for each snippet
+    // Build a row for each snippet.
     foreach ($snippets as $id => $snippet) {
       $actions = array();
       $enabled = ($snippet->status) ? t('Disable') : t('Enable');
@@ -60,24 +63,32 @@ function theme_tracking_code_overview_table($variables) {
         'data' => array(
           array(
             'data' => check_plain($snippet->name),
-            'class' => 'tracking-code-name'
+            'class' => 'tracking-code-name',
           ),
           array(
             'data' => check_plain(truncate_utf8($snippet->code, 150, FALSE, '...')),
-            'class' => 'tracking-code-code'
+            'class' => 'tracking-code-code',
           ),
           implode(' | ', $actions),
           drupal_render($form['tracking_code'][$region]['weight_' . $snippet->tcid]),
         ),
-        // make all rows draggable
+        // Make all rows draggable.
         'class' => ($snippet->status) ? array('draggable') : array('draggable tracking-code-disabled'),
       );
     }
 
     switch ($region) {
-      case 'header'     : $output .= '<h2>In &lt;HEAD&gt;</h2>'; break;
-      case 'page_top'   : $output .= '<h2>After &lt;BODY&gt;</h2>'; break;
-      case 'page_bottom': $output .= '<h2>Before &lt;/BODY&gt;</h2>'; break;
+      case 'header':
+        $output .= '<h2>In &lt;HEAD&gt;</h2>';
+        break;
+
+      case 'page_top':
+        $output .= '<h2>After &lt;BODY&gt;</h2>';
+        break;
+
+      case 'page_bottom':
+        $output .= '<h2>Before &lt;/BODY&gt;</h2>';
+        break;
     }
 
     $output .= theme('table', array(
@@ -95,9 +106,9 @@ function theme_tracking_code_overview_table($variables) {
 }
 
 /**
- * Form elements for tracking code overview table
+ * Form for tracking code overview table.
  *
- * @return
+ * @return array
  *   a renderable Form API array
  */
 function tracking_code_overview_form() {
@@ -116,7 +127,7 @@ function tracking_code_overview_form() {
 
   foreach ($regions as $region => $snippets) {
     foreach ($snippets as $id => $snippet) {
-      // build a form element for each weight attribute
+      // Build a form element for each weight attribute.
       $form['tracking_code'][$region]['weight_' . $id] = array(
         '#type' => 'textfield',
         '#default_value' => $snippet->weight,
@@ -134,9 +145,9 @@ function tracking_code_overview_form() {
 }
 
 /**
- * Form elements for codeblock addition (admin/structure/tracking_code/add)
+ * Form for adding codeblocks (admin/structure/tracking_code/add).
  *
- * @return
+ * @return array
  *   a renderable Form API array
  */
 function tracking_code_add_form() {
@@ -161,12 +172,12 @@ function tracking_code_add_form() {
 }
 
 /**
- * Form elements for editing an existing codeblock (admin/structure/tracking_code/%/edit)
+ * Form for editing codeblocks (admin/structure/tracking_code/%/edit).
  *
  * @param (int) $delta
  *   the array index of the codeblock to edit
  *
- * @return
+ * @return array
  *   a renderable Form API array
  */
 function tracking_code_edit_form($form, &$form_state, $delta) {
@@ -250,12 +261,12 @@ function tracking_code_edit_form($form, &$form_state, $delta) {
 }
 
 /**
- * Form elements for deleting an existing codeblock (admin/structure/tracking_code/%/delete)
+ * Form for deleting codeblocks (admin/structure/tracking_code/%/delete).
  *
  * @param (int) $delta
  *   the array index of the codeblock to edit
  *
- * @return
+ * @return array
  *   a renderable Form API array or 404
  */
 function tracking_code_delete_form($form, &$form_state, $delta) {
@@ -267,13 +278,13 @@ function tracking_code_delete_form($form, &$form_state, $delta) {
 }
 
 /**
- * Page callback for AJAX enable/disable request on a codeblock
+ * Page callback for AJAX enable/disable request on a codeblock.
  *
  * @param (int) $delta
  *   the primary key of the tracking code to enable/disable
  *
- * @return (string) $response
- *   JSON object containing the status and label replacement
+ * @return string
+ *   a JSON object containing the status and label replacement
  */
 function tracking_code_ajax_disable($delta) {
   $snippet = _tracking_code_read($delta);
@@ -286,7 +297,7 @@ function tracking_code_ajax_disable($delta) {
 
   $response = array(
     'status' => $status,
-    'label' => ($status ? t('Disable') : t('Enable'))
+    'label' => ($status ? t('Disable') : t('Enable')),
   );
 
   print drupal_json_encode($response);
@@ -294,21 +305,26 @@ function tracking_code_ajax_disable($delta) {
 }
 
 
-// ### SUBMIT/VALIDATE FUNCTIONS ### //
+/**
+ * ### SUBMIT/VALIDATE FUNCTIONS ###
+ */
+
 
 /**
- * Validation function for tracking_code overview/weight table
+ * Validation function for tracking_code overview/weight table.
  */
 function tracking_code_overview_form_validate($form, $form_state) {
   foreach ($form_state['values'] as $key => $value) {
     if (preg_match('/^weight_[0-9]+$/', $key)) {
-      if (!is_numeric($value)) form_set_error($key, t('Weight attribute must be a numeric value.'));
+      if (!is_numeric($value)) {
+        form_set_error($key, t('Weight attribute must be a numeric value.'));
+      }
     }
   }
 }
 
 /**
- * Submit function for tracking_code overview/weight table
+ * Submit function for tracking_code overview/weight table.
  */
 function tracking_code_overview_form_submit($form, &$form_state) {
   foreach ($form_state['values'] as $key => $value) {
@@ -324,7 +340,7 @@ function tracking_code_overview_form_submit($form, &$form_state) {
 }
 
 /**
- * Submit function for tracking_code add form
+ * Submit function for tracking_code add form.
  */
 function tracking_code_add_form_submit($form, &$form_state) {
   $tcid = db_insert('tracking_code')
@@ -344,7 +360,7 @@ function tracking_code_add_form_submit($form, &$form_state) {
 }
 
 /**
- * Submit function for tracking_code edit form
+ * Submit function for tracking_code edit form.
  */
 function tracking_code_edit_form_submit($form, &$form_state) {
   db_update('tracking_code')
@@ -365,7 +381,7 @@ function tracking_code_edit_form_submit($form, &$form_state) {
 }
 
 /**
- * Submit function for tracking_code delete form
+ * Submit function for tracking_code delete form.
  */
 function tracking_code_delete_form_submit($form, &$form_state) {
   db_delete('tracking_code')

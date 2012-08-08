@@ -13,7 +13,7 @@
   -moz-opacity: 0.5;
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
   filter: alpha(opacity=50);
-  font-style: italic;
   font-size: 95%;
+  font-style: italic;
   opacity: 0.5;
 }

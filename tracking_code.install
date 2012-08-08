@@ -2,7 +2,7 @@
 
 /**
  * @file
- *   contains installation information for tracking_code module
+ * contains installation information for tracking_code module
  */
 
 /**
@@ -14,10 +14,12 @@ function tracking_code_schema() {
     'export' => array(
       'key' => 'tcid',
       'identifier' => 'tracking_code',
-      'default hook' => 'default_mymodule_myobj',  // Function hook name.
+      // Function hook name.
+      'default hook' => 'default_mymodule_myobj',
       'api' => array(
         'owner' => 'mymodule',
-        'api' => 'default_mymodule_myobjs',  // Base name for api include files.
+        // Base name for api include files.
+        'api' => 'default_mymodule_myobjs',
         'minimum_version' => 1,
         'current_version' => 1,
       ),
@@ -43,8 +45,9 @@ function tracking_code_schema() {
       ),
       'region' => array(
         'description' => 'The region in which this codeblock will appear (header, page_top, or page_bottom)',
+        // header, page_top, page_bottom
         'type' => 'varchar',
-        'length' => 20, // header, page_top, page_bottom
+        'length' => 20,
         'not null' => TRUE,
         'default' => 'page_bottom',
       ),
