@@ -18,6 +18,8 @@
           anchor.html(response.label);
           loading.remove();
         });
+
+        return false;
       });
     }
   };

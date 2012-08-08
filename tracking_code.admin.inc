@@ -35,7 +35,9 @@ function theme_tracking_code_overview_table($variables) {
   $regions = unserialize($form['regions']['#value']);
 
   if (empty($regions['header']) && empty($regions['page_top']) && empty($regions['page_bottom'])) {
-    return 'You have not configured any tracking code snippets. <a href="' . $base_url . '/admin/structure/tracking_code/add">Click here</a> to add one.';
+    $link = l('Click here', 'admin/structure/tracking_code/add');
+    $output .= t('You have not configured any tracking code snippets. !link to add one.', array('!link' => $link));
+    return $output;
   }
 
   // Create a table for each region.
@@ -54,9 +56,13 @@ function theme_tracking_code_overview_table($variables) {
       $actions = array();
       $enabled = ($snippet->status) ? t('Disable') : t('Enable');
       $actions = array(
-        '<a class="tracking-code-disable-link" href="#" rel="' . $snippet->tcid . '">' . $enabled . '</a>',
-        l(t('Configure'), $base_url . '/admin/structure/tracking_code/' . $snippet->tcid . '/edit'),
-        l(t('Delete'), $base_url . '/admin/structure/tracking_code/' . $snippet->tcid . '/delete'),
+        l($enabled, 'admin/structure/tracking_code/', array(
+          'attributes' => array('class' => 'tracking-code-disable-link', 'rel' => $snippet->tcid),
+          'html' => TRUE,
+          'fragment' => '',
+        )),
+        l(t('Configure'), 'admin/structure/tracking_code/' . $snippet->tcid . '/edit'),
+        l(t('Delete'), 'admin/structure/tracking_code/' . $snippet->tcid . '/delete'),
       );
 
       $rows[] = array(
