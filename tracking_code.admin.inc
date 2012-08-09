@@ -403,7 +403,6 @@ function tracking_code_edit_form_submit($form, &$form_state) {
  * Submit function for tracking_code delete form.
  */
 function tracking_code_delete_form_submit($form, &$form_state) {
-  dsm($form_state);
   db_delete('tracking_code')
     ->condition('tcid', $form_state['values']['delta'])
     ->execute();
