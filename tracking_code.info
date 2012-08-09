@@ -2,3 +2,4 @@ name = "Tracking Code"
 description = "Provides an interface for adding tracking code snippets into pages using block-like visibility"
 package = Statistics
 core = 7.x
+
