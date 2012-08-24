@@ -169,6 +169,15 @@ function tracking_code_add_form() {
     '#description' => t('Paste your tracking code here'),
   );
 
+  if (module_exists('token')) {
+    $form['tokens'] = array(
+      '#theme' => 'token_tree',
+      '#token_types' => array('node'),
+      '#global_types' => TRUE,
+      '#click_insert' => TRUE,
+    );
+  }
+
   $form['submit'] = array(
     '#type' => 'submit',
     '#value' => t('Save Snippet'),
@@ -187,6 +196,7 @@ function tracking_code_add_form() {
  *   a renderable Form API array
  */
 function tracking_code_edit_form($form, &$form_state, $delta) {
+  _tracking_code_set_breadcrumb();
   $snippet = _tracking_code_read($delta);
 
   // Don't show a blank edit form.
@@ -221,6 +231,15 @@ function tracking_code_edit_form($form, &$form_state, $delta) {
     '#description' => t('Enter your tracking code snippet here'),
     '#default_value' => $snippet['code'],
   );
+
+  if (module_exists('token')) {
+    $form['tokens'] = array(
+      '#theme' => 'token_tree',
+      '#token_types' => array('node'),
+      '#global_types' => TRUE,
+      '#click_insert' => TRUE,
+    );
+  }
 
   $form['tracking_code_options'] = array(
     '#type' => 'fieldset',

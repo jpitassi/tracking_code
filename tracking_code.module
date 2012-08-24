@@ -17,12 +17,14 @@ define('TRACKING_CODE_VISIBILITY_LISTED', 1);
 function tracking_code_init() {
   $_SESSION['tracking_code'] = _tracking_code_enabled_by_region();
 
+  $node = menu_get_object();
+
   // Render tracking_code in <HEAD> immediately.
   // Other tracking_code will be rendered by hook_page_alter().
   foreach ($_SESSION['tracking_code']['header'] as $id => $snippet) {
     drupal_add_html_head(array(
       '#type' => 'markup',
-      '#markup' => $snippet->code,
+      '#markup' => token_replace($snippet->code, array('node' => $node)),
       '#weight' => $snippet->weight,
     ), 'tracking_code_' . $id);
   }
@@ -32,10 +34,12 @@ function tracking_code_init() {
  * Implements hook_page_alter().
  */
 function tracking_code_page_alter(&$page) {
+  $node = menu_get_object();
+
   // Render "After <BODY>" tracking code.
   foreach ($_SESSION['tracking_code']['page_top'] as $snippet) {
     $page['page_top']['tracking_code'][$snippet->name] = array(
-      '#markup' => $snippet->code,
+      '#markup' => token_replace($snippet->code, array('node' => $node)),
       '#weight' => $snippet->weight,
     );
   }
@@ -43,7 +47,7 @@ function tracking_code_page_alter(&$page) {
   // Render "Before </BODY>" tracking code.
   foreach ($_SESSION['tracking_code']['page_bottom'] as $snippet) {
     $page['page_bottom']['tracking_code'][$snippet->name] = array(
-      '#markup' => $snippet->code,
+      '#markup' => token_replace($snippet->code, array('node' => $node)),
       '#weight' => $snippet->weight,
     );
   }
@@ -240,6 +244,17 @@ function _tracking_code_all_by_region() {
   }
 
   return $snippets;
+}
+
+function _tracking_code_set_breadcrumb() {
+  $breadcrumb = array(
+    l(t('Home'), '<front>'),
+    l(t('Administration'), 'admin'),
+    l(t('Structure'), 'admin/structure'),
+    l(t('Tracking Code Snippets'), 'admin/structure/tracking_code'),
+  );
+
+  drupal_set_breadcrumb($breadcrumb);
 }
 
 /**
