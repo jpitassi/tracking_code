@@ -34,6 +34,11 @@ function tracking_code_init() {
  * Implements hook_page_alter().
  */
 function tracking_code_page_alter(&$page) {
+  // Don't try to run foreach if tracking code doesn't exist.
+  if (!isset($_SESSION['tracking_code'])) {
+    return;
+  }
+
   $node = menu_get_object();
 
   // Render "After <BODY>" tracking code.
