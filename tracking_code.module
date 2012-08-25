@@ -32,6 +32,11 @@ function tracking_code_init() {
  * Implements hook_page_alter().
  */
 function tracking_code_page_alter(&$page) {
+  // Don't try to run foreach if tracking code doesn't exist.
+  if (!isset($_SESSION['tracking_code'])) {
+    return;
+  }
+
   // Render "After <BODY>" tracking code.
   foreach ($_SESSION['tracking_code']['page_top'] as $snippet) {
     $page['page_top']['tracking_code'][$snippet->name] = array(
