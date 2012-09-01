@@ -251,6 +251,9 @@ function _tracking_code_all_by_region() {
   return $snippets;
 }
 
+/**
+ * Sets the Drupal breadcrumb on admin pages.
+ */
 function _tracking_code_set_breadcrumb() {
   $breadcrumb = array(
     l(t('Home'), '<front>'),
