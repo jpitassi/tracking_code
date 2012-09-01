@@ -1,0 +1,12 @@
+Tracking Code 1.1
+=================
+
+  Bug Fixes
+   - #1751822 -- Notices and warnings after install
+
+Tracking Code 1.2
+=================
+
+  New Features
+   - #1752338 -- Added compatibility with token module, and ability to add
+                 tokens to tracking code snippets.

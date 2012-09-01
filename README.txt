@@ -1,7 +1,8 @@
-Tracking Code
-=============
+Tracking Code Module
 
-I. Description
+
+Description
+===========
   A module that allows admins to create tracking code snippets and control their
   visibility similar to the core Drupal block module. It can be used to inject
   arbitrary code into the <head>, and at the beginning and end of the <body>
@@ -12,7 +13,7 @@ I. Description
   visibility settings similar to the core Drupal block module: white/black list
   by Drupal path and content type.
 
-  Currently there are three possible regions to inject your tracking code snippets:
+  Currently there are three possible regions to inject your tracking code:
    * Inside <HEAD>  - Code added using drupal_add_html_head()
    * After <BODY> - Code added to $page['page_top'] in hook_page_alter()
    * Before </BODY> - Code added to $page['content_bottom'] in hook_page_alter()
@@ -21,8 +22,9 @@ I. Description
   to change the relative weights of your snippets to make sure they execute in
   the correct order within a given region.
 
-II. Configuration
-  
+
+Configuration
+=============
   * Only roles with the "administer tracking code" permission can access the
     administrative page and configure this module.
   * To configure the tracking code module, navigate to:
@@ -36,3 +38,14 @@ II. Configuration
     page visibility, and choosing content types to restrict visiblity to. These
     options were designed to look/feel/behave similar to Drupal's core block
     module.
+
+
+Acknowledgements
+================
+  Initial development of the tracking_code module was sponsored by Allora Media
+  (http://www.alloramedia.com). 
+
+
+Author
+======
+  Joe Pitassi (http://drupal.org/user/382188, IRC: ColonelForbinX)
