@@ -7,6 +7,7 @@
 
 /**
  * Implements hook_schema().
+ * @todo Finish making this exportable.
  */
 function tracking_code_schema() {
   $schema['tracking_code'] = array(
