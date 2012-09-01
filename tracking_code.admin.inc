@@ -271,7 +271,7 @@ function tracking_code_edit_form($form, &$form_state, $delta) {
   $form['tracking_code_options']['tracking_code_pages'] = array(
     '#type' => 'textarea',
     '#title' => t('Pages'),
-    '#description' => t("Specify pages by using their paths. Enter one path per line. The '*' character is a wildcard. Example paths are blog for the blog page and blog/* for every personal blog. <front> is the front page."),
+    '#description' => t("Specify pages by using their paths. Enter one path per line. The '*' character is a wildcard. Example paths are blog for the blog page and blog/* for every personal blog. &lt;front&gt; is the front page."),
     '#default_value' => $snippet['pages'],
   );
 
